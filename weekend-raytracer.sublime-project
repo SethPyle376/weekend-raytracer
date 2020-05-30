@@ -1,0 +1,34 @@
+{
+	"folders":
+	[
+		{
+			"path": ".",
+			"folder_exclude_patterns":
+			[
+				"build",
+				".vscode"
+			]
+		}
+	],
+	"settings":
+	{
+		"tab_size": 2,
+		"translate_tabs_to_spaces": true,
+    "sublimegdb_workingdir": "${folder:${project_path:.}}",
+    // NOTE: You MUST provide --interpreter=mi for the plugin to work
+    "sublimegdb_commandline": "gdb --interpreter=mi ./build/Application"
+	},
+	"build_systems":
+	[
+		{
+			"name": "run build script",
+			"shell_cmd": "./build.sh"
+		}
+	],
+	"ecc_flags_sources":
+	[
+    {
+        "file": "CMakeLists.txt",
+    }
+  ]
+}
