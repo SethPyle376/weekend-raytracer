@@ -1,6 +1,8 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
+#include "ray.h"
+#include "vec3.h"
 #include "math/math_common.h"
 
 class camera {
