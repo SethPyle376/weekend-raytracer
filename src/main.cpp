@@ -1,4 +1,5 @@
 #include <iostream>
+#include <time.h>
 
 #include "ray.h"
 #include "vec3.h"
@@ -10,6 +11,8 @@
 #include "material/lambertian.h"
 #include "material/metal.h"
 #include "material/dielectric.h"
+
+#include "bvh/bvh_node.h"
 
 hittable_list random_scene() {
     hittable_list world;
@@ -51,7 +54,9 @@ hittable_list random_scene() {
     auto material3 = std::make_shared<metal>(color(0.7, 0.6, 0.5), 0.0);
     world.add(std::make_shared<sphere>(point3(4, 1, 0), 1.0, material3));
 
-    return world;
+    std::shared_ptr<hittable> bvh_world = std::make_shared<bvh_node>(world, 0.0, 1.0);
+
+    return hittable_list(bvh_world);
 }
 
 color ray_color(const ray& r, const hittable& world, int depth) {
@@ -74,10 +79,11 @@ color ray_color(const ray& r, const hittable& world, int depth) {
 }
 
 int main() {
+    srand(time(NULL));
     const auto aspect_ratio = 16.0 / 9.0;
-    const int image_width = 1920;
+    const int image_width = 1024;
     const int image_height = static_cast<int>(image_width / aspect_ratio);
-    const int samples_per_pixel = 100;
+    const int samples_per_pixel = 10;
     const int max_depth = 50;
 
     std::cout << "P3\n" << image_width << ' ' << image_height << "\n255\n";

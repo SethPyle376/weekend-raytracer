@@ -13,6 +13,10 @@ inline double degrees_to_radians(double degrees) {
   return degrees * pi / 180;
 }
 
+inline int random_int(int min, int max) {
+  return rand() % max + min;
+}
+
 inline double random_double() {
   return rand() / (RAND_MAX + 1.0);
 }
