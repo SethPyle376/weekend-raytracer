@@ -17,7 +17,12 @@
 hittable_list random_scene() {
     hittable_list world;
 
-    auto ground_material = std::make_shared<lambertian>(color(0.5, 0.5, 0.5));
+    auto checker = std::make_shared<checker_texture>(
+        std::make_shared<solid_color>(0.0, 0.0, 0.0),
+        std::make_shared<solid_color>(1.0, 1.0, 1.0)
+    );
+
+    auto ground_material = std::make_shared<lambertian>(checker);
     world.add(std::make_shared<sphere>(point3(0, -1000, 0), 1000, ground_material));
 
     for (int a = -11; a < 11; a++) {
@@ -30,7 +35,8 @@ hittable_list random_scene() {
 
                 if (choose_mat < 0.4) {
                     auto albedo = color::random() * color::random();
-                    sphere_material = std::make_shared<lambertian>(albedo);
+                    auto solid_texture = std::make_shared<solid_color>(albedo);
+                    sphere_material = std::make_shared<lambertian>(solid_texture);
                     world.add(std::make_shared<sphere>(center, 0.2, sphere_material));
                 } else if (choose_mat < 0.8) {
                     auto albedo = color::random(0.5, 1);
@@ -48,7 +54,7 @@ hittable_list random_scene() {
     auto material1 = std::make_shared<dielectric>(1.5);
     world.add(std::make_shared<sphere>(point3(0, 1, 0), 1.0, material1));
 
-    auto material2 = std::make_shared<lambertian>(color(0.4, 0.2, 0.1));
+    auto material2 = std::make_shared<lambertian>(std::make_shared<solid_color>(color(0.4, 0.2, 0.1)));
     world.add(std::make_shared<sphere>(point3(-4, 1, 0), 1.0, material2));
 
     auto material3 = std::make_shared<metal>(color(0.7, 0.6, 0.5), 0.0);
@@ -83,7 +89,7 @@ int main() {
     const auto aspect_ratio = 16.0 / 9.0;
     const int image_width = 1024;
     const int image_height = static_cast<int>(image_width / aspect_ratio);
-    const int samples_per_pixel = 10;
+    const int samples_per_pixel = 100;
     const int max_depth = 50;
 
     std::cout << "P3\n" << image_width << ' ' << image_height << "\n255\n";
